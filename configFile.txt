@@ -1,0 +1,2 @@
+conf t
+banner motd PYCISCO

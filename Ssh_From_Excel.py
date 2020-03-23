@@ -22,5 +22,6 @@ for x in range (1,row_value):
         'secret':str(deviceInfo[5])
         }
     baglanti = ConnectHandler(**deviceConnection)
-    print(baglanti.send_command("show run"))
+    baglanti.send_config_set(enter_config_mode=True,config_commands="vlan 99",exit_config_mode=True)
+
     deviceInfo.clear()
