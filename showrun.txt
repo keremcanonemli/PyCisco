@@ -1,0 +1,119 @@
+Building configuration...
+
+Current configuration : 2697 bytes
+!
+! Last configuration change at 00:00:58 UTC Mon Jan 2 2006
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname SW2
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$jq2O$RTZ8wd5vdn2fmhDzWiUnH.
+!
+username admin privilege 15 password 0 Btegitim2020
+no aaa new-model
+system mtu routing 1500
+!
+!
+no ip domain-lookup
+ip domain-name onemli.local
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-436254464
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-436254464
+ revocation-check none
+ rsakeypair TP-self-signed-436254464
+!
+!
+crypto pki certificate chain TP-self-signed-436254464
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 34333632 35343436 34301E17 0D303630 31303230 30303130 
+  335A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3433 36323534 
+  34363430 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  C486DC26 98C55FEC 2DDE2240 153F99E3 02BB8E9F 573EC806 31FE2CE1 91AB08CE 
+  49139C0B 2EA3102A 39A571E5 9164158F F82E9593 76C25BA5 25D812B6 C140CA68 
+  8D23EF89 7F6F6B11 F27B2561 72E4E250 A6BE97C3 D380CE1D 5821FE62 5363B0B8 
+  AE04802E 0C1F47BE 19BAC4D3 0EFF7262 E3CF503F 68D1073A 9A336037 80A69C61 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 168014F9 DD38BC89 1828FFFC 5FCF4E3D 49404E49 C29A3430 1D060355 
+  1D0E0416 0414F9DD 38BC8918 28FFFC5F CF4E3D49 404E49C2 9A34300D 06092A86 
+  4886F70D 01010505 00038181 0049F66F F4E2D744 30921E69 07829B7D D9C2FC9B 
+  86242A95 97A8E7D6 DC7B9BCF A758DFB4 35C590F9 F3A78CBF 4D5DDCA0 B26D6F8F 
+  2197D24A 2CBAA5C8 AD1EF5B7 F0560DC0 FFFEC20D A8640322 673FC5E7 BD5F77D0 
+  1610CBDB A93CD824 78013567 BC54E6A6 6C622BA6 B6265D2A 8A71A454 0A33890E 
+  FFCBF407 B4C643C4 C255F730 BC
+  	quit
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/1
+!
+interface GigabitEthernet0/2
+!
+interface GigabitEthernet0/3
+!
+interface GigabitEthernet0/4
+!
+interface GigabitEthernet0/5
+!
+interface GigabitEthernet0/6
+!
+interface GigabitEthernet0/7
+!
+interface GigabitEthernet0/8
+!
+interface GigabitEthernet0/9
+!
+interface GigabitEthernet0/10
+!
+interface Vlan1
+ ip address 10.0.10.20 255.255.255.0
+!
+ip forward-protocol nd
+ip http server
+ip http secure-server
+!
+!
+!
+!
+!
+line con 0
+line vty 0 4
+ login local
+ transport input all
+line vty 5 15
+ login
+!
+!
+end
