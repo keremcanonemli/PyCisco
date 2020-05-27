@@ -11,6 +11,12 @@ import textfsm
 # -----------Load Workbook/Worksheet-----------
 workbook = load_workbook("helper.xlsx")
 worksheet = workbook["python"]
+worksheet1=workbook.create_sheet("svi")
+worksheet1.cell(1,1).value="VLAN-ID"
+worksheet1.cell(1,2).value="VLAN-NAME"
+worksheet1.cell(1,3).value="SVI-ADDRESS"
+worksheet1.cell(1,4).value="SUBNET-MASK"
+worksheet1.cell(1,5).value="COMMENT"
 # -----------Load Workbook/Worksheet-----------
 
 # -----------Connect Device-----------
@@ -125,10 +131,14 @@ print(interfaces_dictionary[2])
 row=2
 for int_col_num in range(2, len(interfaces_dictionary) + 1):
     interface=interfaces_dictionary[int_col_num]
-    sendcommand="""show interfaces """+interface+""" switchport"""
-    interfaces_switchport_output = connect.send_command(str(sendcommand))
-    command_str="""show interfaces switchport"""
-    interfaces_switchport_parsed = parse_output(platform="cisco_ios", command=str(command_str), data=interfaces_switchport_output)
+    try:
+        sendcommand="""show interfaces """+interface+""" switchport"""
+        interfaces_switchport_output = connect.send_command(str(sendcommand))
+        command_str="""show interfaces switchport"""
+
+        interfaces_switchport_parsed = parse_output(platform="cisco_ios", command=str(command_str), data=interfaces_switchport_output)
+    except:
+        print("Error Detected")
 
     for item in interfaces_switchport_parsed:
         if item["switchport"]=="Enabled":
@@ -246,3 +256,29 @@ for item in int_desc_parsed:
         worksheet.cell(row_id, 10).value = "No Description"
 workbook.save("helper.xlsx")
 #------------Interfaces Desc----
+
+#------------SVI----
+
+ip_int_output =connect.send_command("""show ip interface brief""")
+ip_int_parsed =parse_output(platform="cisco_ios", command="show ip interface brief", data= ip_int_output)
+#print(json.dumps(ip_int_parsed ,indent=4))
+sh_vlan_output = connect.send_command("""show vlan brief""")
+sh_vlan_parsed  = parse_output(platform="cisco_ios", command="show vlan brief", data= sh_vlan_output)
+row=2
+for item in sh_vlan_parsed :
+
+    worksheet1.cell(row,1).value=item["vlan_id"]
+    worksheet1.cell(row,2).value=item["name"]
+    for interface in ip_int_parsed:
+        x=interface["intf"]
+        try:
+            if int(item["vlan_id"])==int(x[4:]):
+                worksheet1.cell(row, 3).value=interface["ipaddr"]
+                break
+        except:
+            print("Error - - - - This is not SVI")
+    row += 1
+workbook.save("helper.xlsx")
+#print(json.dumps(sh_vlan_parsed ,indent=4))
+
+#------------SVI----
