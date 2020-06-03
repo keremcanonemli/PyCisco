@@ -1,0 +1,48 @@
+import platform  # İşletim sisteminin adını alabilmek için
+import subprocess  # Shell komutunu çalıştırabilmek için
+import datetime, threading
+from netmiko import ConnectHandler
+import os
+
+deviceConnection = {
+    'device_type': 'cisco_ios',
+    'host': '192.168.138.10',
+    'username': 'keremcan',
+    'password': 'onemli',
+    'port': 22,
+    'secret': '',
+}
+
+device = "10.0.10.1"
+
+#---------------PING---------------------------------------
+
+def ping(host):
+    # Windows ise -n ile farklı platform ise -c ile belirli sayıda paket gönder
+    parameter = '-n' if platform.system().lower() == 'windows' else '-c'
+
+    # Komutun çıktısı ping -c 1 "google.com"
+    command = ['ping', parameter, '10', host]
+
+    return subprocess.call(command)
+#---------------PING---------------------------------------
+
+#---------------ZAMANLAYICI---------------------------------------
+timerSeconds = 10
+today=datetime.date(2020, 6, 3)
+ticker = threading.Event()
+
+while not ticker.wait(timerSeconds):
+
+    result = ping(device)
+
+
+    if result == 0 or result == False:
+        print("Erişilebilir" + "   " + str(datetime.date.today()))
+    elif result ==1 or result == True:
+        print("ERİŞİLEMİYOR" + "   " + str(datetime.date.today()))
+        connect = ConnectHandler(**deviceConnection)
+        interface_up = connect.send_config_from_file("config.txt")
+        xyz = connect.send_command
+        connect.disconnect()
+#---------------ZAMANLAYICI---------------------------------------
